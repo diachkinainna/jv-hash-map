@@ -17,12 +17,8 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     @Override
     public void put(K key, V value) {
-
-        Node<K, V> newNode = new Node<>(key, value);
-        newNode.hash = getHash(key);
-        int bucketIndex = getBucketIndex(newNode.hash);
-
-        Node<K, V> currentNode = table[bucketIndex];
+        int hash = getHash(key);
+        Node<K, V> currentNode = table[getBucketIndex(hash)];
 
         while (currentNode != null) {
             if (compareKey(key, currentNode.key)) {
@@ -36,6 +32,10 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         if (!checkThreshold()) {
             resizeTable();
         }
+
+        Node<K, V> newNode = new Node<>(key, value);
+        newNode.hash = hash;
+        int bucketIndex = getBucketIndex(newNode.hash);
 
         currentNode = table[bucketIndex];
 
